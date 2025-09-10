@@ -1,406 +1,406 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Clothing Outfit Spinner</title>
     <style>
-        body {
-            margin: 0;
-            padding: 20px;
-            background:rgb(16, 95, 75);
-            font-family: 'Arial', sans;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: #333;
-        }
+      body {
+        margin: 0;
+        padding: 20px;
+        background: white;
+        font-family: "Arial", sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #333;
+      }
 
-        .container {
-            text-align: center;
-            max-width: 1200px;
-            width: 100%;
-        }
+      .container {
+        text-align: center;
+        max-width: 1200px;
+        width: 100%;
+      }
 
-        h1 {
-            font-size: 3em;
-            margin-bottom: 20px;
-            color: #333;
-        }
+      h1 {
+        font-size: 3em;
+        margin-bottom: 20px;
+        color: #333;
+      }
 
-        .subtitle {
-            font-size: 18px;
-            margin-bottom: 30px;
-            color: #666;
-        }
+      .subtitle {
+        font-size: 18px;
+        margin-bottom: 30px;
+        color: #666;
+      }
 
+      .spinners-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 40px;
+        flex-wrap: wrap;
+        margin: 30px 0;
+      }
+
+      .spinner-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .spinner-label {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #333;
+      }
+
+      .wheel-container {
+        position: relative;
+        width: 250px;
+        height: 250px;
+        margin: 0 auto;
+      }
+
+      .wheel {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        transition: transform 4s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+
+      .pointer {
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 12px solid transparent;
+        border-right: 12px solid transparent;
+        border-top: 24px solid #333;
+        z-index: 10;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      }
+
+      .center-circle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        background: white;
+        border-radius: 50%;
+        z-index: 5;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      button {
+        background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+        color: white;
+        border: none;
+        padding: 18px 40px;
+        font-size: 20px;
+        font-weight: bold;
+        border-radius: 50px;
+        cursor: pointer;
+        margin: 20px 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+
+      .result {
+        margin-top: 30px;
+        padding: 30px;
+        background: white;
+        border-radius: 15px;
+        font-size: 18px;
+        max-width: 400px;
+        margin: 30px auto 0;
+        color: #333;
+      }
+
+      .outfit-item {
+        margin: 10px 0;
+        padding: 15px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .item-emoji {
+        font-size: 28px;
+        width: 40px;
+        text-align: center;
+        flex-shrink: 0;
+      }
+
+      .item-content {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .item-category {
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .item-name {
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      @media (max-width: 768px) {
         .spinners-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 40px;
-            flex-wrap: wrap;
-            margin: 30px 0;
-        }
-
-        .spinner-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .spinner-label {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #333;
+          flex-direction: column;
+          gap: 30px;
         }
 
         .wheel-container {
-            position: relative;
-            width: 250px;
-            height: 250px;
-            margin: 0 auto;
+          width: 200px;
+          height: 200px;
         }
-
-        .wheel {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            transition: transform 4s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        .pointer {
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 12px solid transparent;
-            border-right: 12px solid transparent;
-            border-top: 24px solid #333;
-            z-index: 10;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-        }
-
-        .center-circle {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 40px;
-            height: 40px;
-            background: white;
-            border-radius: 50%;
-            z-index: 5;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-
-        button {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-            color: white;
-            border: none;
-            padding: 18px 40px;
-            font-size: 20px;
-            font-weight: bold;
-            border-radius: 50px;
-            cursor: pointer;
-            margin: 20px 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-        }
-
-        button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-
-        .result {
-            margin-top: 30px;
-            padding: 30px;
-            background: white;
-            border-radius: 15px;
-            font-size: 18px;
-            max-width: 400px;
-            margin: 30px auto 0;
-            color: #333;
-        }
-
-        .outfit-item {
-            margin: 10px 0;
-            padding: 15px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .item-emoji {
-            font-size: 28px;
-            width: 40px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        .item-content {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .item-category {
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .item-name {
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        @media (max-width: 768px) {
-            .spinners-container {
-                flex-direction: column;
-                gap: 30px;
-            }
-            
-            .wheel-container {
-                width: 200px;
-                height: 200px;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1>🌈 MY AWESOME SPINNER - LIVE TEST</h1>
-        <p class="subtitle">Spin all three wheels to create your perfect outfit!</p>
-        
-        <div class="spinners-container">
-            <div class="spinner-section">
-                <div class="spinner-label">ACCESSORY</div>
-                <div class="wheel-container">
-                    <div class="pointer"></div>
-                    <div class="wheel" id="accessory-wheel"></div>
-                    <div class="center-circle"></div>
-                </div>
-            </div>
-            
-            <div class="spinner-section">
-                <div class="spinner-label">TOP</div>
-                <div class="wheel-container">
-                    <div class="pointer"></div>
-                    <div class="wheel" id="top-wheel"></div>
-                    <div class="center-circle"></div>
-                </div>
-            </div>
-            
-            <div class="spinner-section">
-                <div class="spinner-label">BOTTOM</div>
-                <div class="wheel-container">
-                    <div class="pointer"></div>
-                    <div class="wheel" id="bottom-wheel"></div>
-                    <div class="center-circle"></div>
-                </div>
-            </div>
+      <h1>🌈 MY AWESOME SPINNER - LIVE TEST</h1>
+      <p class="subtitle">
+        Spin all three wheels to create your perfect outfit!
+      </p>
+
+      <div class="spinners-container">
+        <div class="spinner-section">
+          <div class="spinner-label">ACCESSORY</div>
+          <div class="wheel-container">
+            <div class="pointer"></div>
+            <div class="wheel" id="accessory-wheel"></div>
+            <div class="center-circle"></div>
+          </div>
         </div>
-        
-        <button onclick="spinAll()">🎲 SPIN ALL WHEELS!</button>
-        
-        <div class="result" id="result">
-            Ready to create your outfit? Hit that spin button!
+
+        <div class="spinner-section">
+          <div class="spinner-label">TOP</div>
+          <div class="wheel-container">
+            <div class="pointer"></div>
+            <div class="wheel" id="top-wheel"></div>
+            <div class="center-circle"></div>
+          </div>
         </div>
+
+        <div class="spinner-section">
+          <div class="spinner-label">BOTTOM</div>
+          <div class="wheel-container">
+            <div class="pointer"></div>
+            <div class="wheel" id="bottom-wheel"></div>
+            <div class="center-circle"></div>
+          </div>
+        </div>
+      </div>
+
+      <button onclick="spinAll()">🎲 SPIN ALL WHEELS!</button>
+
+      <div class="result" id="result">
+        Ready to create your outfit? Hit that spin button!
+      </div>
     </div>
 
     <script>
-        const categories = {
-            accessory: {
-                items: [
-                    { name: "Hat", color: "#ff0000", emoji: "🎩" },
-                    { name: "Cap", color: "#00ff00", emoji: "🧢" },
-                    { name: "Bandana", color: "#0000ff", emoji: "🔺" },
-                    { name: "Scarf", color: "#ffff00", emoji: "🧣" },
-                    { name: "Muffler", color: "#ff00ff", emoji: "🧣" },
-                    { name: "Dupatta", color: "#00ffff", emoji: "👘" }
-                ],
-                rotation: 0
-            },
-            top: {
-                items: [
-                    { name: "Shirt", color: "#ff0000", emoji: "👔" },
-                    { name: "Top", color: "#00ff00", emoji: "👕" },
-                    { name: "Blouse", color: "#0000ff", emoji: "👚" },
-                    { name: "Dress", color: "#ffff00", emoji: "👗" },
-                    { name: "Sweater", color: "#ff00ff", emoji: "🧥" },
-                    { name: "Jacket", color: "#00ffff", emoji: "🧥" }
-                ],
-                rotation: 0
-            },
-            bottom: {
-                items: [
-                    { name: "Pants", color: "#ff0000", emoji: "👖" },
-                    { name: "Pajama", color: "#00ff00", emoji: "🩲" },
-                    { name: "Jeans", color: "#0000ff", emoji: "👖" },
-                    { name: "Shorts", color: "#ffff00", emoji: "🩳" },
-                    { name: "Skirt", color: "#ff00ff", emoji: "👗" },
-                    { name: "Capri", color: "#00ffff", emoji: "🩱" }
-                ],
-                rotation: 0
-            }
-        };
+      const categories = {
+        accessory: {
+          items: [
+            { name: "Hat", color: "#ff0000", emoji: "🎩" },
+            { name: "Cap", color: "#00ff00", emoji: "🧢" },
+            { name: "Bandana", color: "#0000ff", emoji: "🔺" },
+            { name: "Scarf", color: "#ffff00", emoji: "🧣" },
+            { name: "Muffler", color: "#ff00ff", emoji: "🧣" },
+            { name: "Dupatta", color: "#00ffff", emoji: "👘" },
+          ],
+          rotation: 0,
+        },
+        top: {
+          items: [
+            { name: "Shirt", color: "#ff0000", emoji: "👔" },
+            { name: "Top", color: "#00ff00", emoji: "👕" },
+            { name: "Blouse", color: "#0000ff", emoji: "👚" },
+            { name: "Dress", color: "#ffff00", emoji: "👗" },
+            { name: "Sweater", color: "#ff00ff", emoji: "🧥" },
+            { name: "Jacket", color: "#00ffff", emoji: "🧥" },
+          ],
+          rotation: 0,
+        },
+        bottom: {
+          items: [
+            { name: "Pants", color: "#ff0000", emoji: "👖" },
+            { name: "Pajama", color: "#00ff00", emoji: "🩲" },
+            { name: "Jeans", color: "#0000ff", emoji: "👖" },
+            { name: "Shorts", color: "#ffff00", emoji: "🩳" },
+            { name: "Skirt", color: "#ff00ff", emoji: "👗" },
+            { name: "Capri", color: "#00ffff", emoji: "🩱" },
+          ],
+          rotation: 0,
+        },
+      };
 
-        let isSpinning = false;
+      let isSpinning = false;
 
-        function getTextColor(hexColor) {
-            const hex = hexColor.replace('#', '');
-            const r = parseInt(hex.substr(0, 2), 16);
-            const g = parseInt(hex.substr(2, 2), 16);
-            const b = parseInt(hex.substr(4, 2), 16);
-            const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-            return luminance > 0.5 ? '#000000' : '#ffffff';
-        }
+      function getTextColor(hexColor) {
+        const hex = hexColor.replace("#", "");
+        const r = parseInt(hex.substr(0, 2), 16);
+        const g = parseInt(hex.substr(2, 2), 16);
+        const b = parseInt(hex.substr(4, 2), 16);
+        const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+        return luminance > 0.5 ? "#000000" : "#ffffff";
+      }
 
-        function createWheel(categoryName) {
-            const wheel = document.getElementById(`${categoryName}-wheel`);
-            const canvas = document.createElement('canvas');
-            canvas.width = 250;
-            canvas.height = 250;
-            canvas.style.width = '100%';
-            canvas.style.height = '100%';
-            
-            wheel.innerHTML = '';
-            wheel.appendChild(canvas);
-            
-            const ctx = canvas.getContext('2d');
-            const items = categories[categoryName].items;
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-            const radius = canvas.width / 2 - 10;
-            const anglePerSlice = (2 * Math.PI) / items.length;
-            
-            items.forEach((item, index) => {
-                const startAngle = index * anglePerSlice - Math.PI / 2;
-                const endAngle = startAngle + anglePerSlice;
-                
-                ctx.beginPath();
-                ctx.moveTo(centerX, centerY);
-                ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-                ctx.closePath();
-                ctx.fillStyle = item.color;
-                ctx.fill();
-                ctx.strokeStyle = '#fff';
-                ctx.lineWidth = 2;
-                ctx.stroke();
-                
-                ctx.save();
-                ctx.translate(centerX, centerY);
-                ctx.rotate(startAngle + anglePerSlice / 2);
-                ctx.textAlign = 'left';
-                ctx.fillStyle = getTextColor(item.color);
-                ctx.font = 'bold 14px Arial';
-                ctx.fillText(item.name, radius * 0.4, 5);
-                ctx.restore();
-            });
-        }
+      function createWheel(categoryName) {
+        const wheel = document.getElementById(`${categoryName}-wheel`);
+        const canvas = document.createElement("canvas");
+        canvas.width = 250;
+        canvas.height = 250;
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
 
-        function spinAll() {
-            if (isSpinning) return;
-            
-            isSpinning = true;
-            const btn = document.querySelector('button');
-            btn.disabled = true;
-            
-            const results = {};
-            
-            Object.keys(categories).forEach(categoryName => {
-                const randomSpins = Math.random() * 3 + 4;
-                const randomDegrees = Math.random() * 360;
-                categories[categoryName].rotation += (randomSpins * 360) + randomDegrees;
-                
-                const wheel = document.getElementById(`${categoryName}-wheel`);
-                wheel.style.transform = `rotate(${categories[categoryName].rotation}deg)`;
-                
-                const anglePerSlice = 360 / categories[categoryName].items.length;
-                const normalizedRotation = categories[categoryName].rotation % 360;
-                const adjustedRotation = (360 - normalizedRotation) % 360;
-                const selectedIndex = Math.floor(adjustedRotation / anglePerSlice);
-                
-                results[categoryName] = categories[categoryName].items[selectedIndex];
-            });
-            
-            setTimeout(() => {
-                document.getElementById('result').innerHTML = `
+        wheel.innerHTML = "";
+        wheel.appendChild(canvas);
+
+        const ctx = canvas.getContext("2d");
+        const items = categories[categoryName].items;
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = canvas.width / 2 - 10;
+        const anglePerSlice = (2 * Math.PI) / items.length;
+
+        items.forEach((item, index) => {
+          const startAngle = index * anglePerSlice - Math.PI / 2;
+          const endAngle = startAngle + anglePerSlice;
+
+          ctx.beginPath();
+          ctx.moveTo(centerX, centerY);
+          ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+          ctx.closePath();
+          ctx.fillStyle = item.color;
+          ctx.fill();
+          ctx.strokeStyle = "#fff";
+          ctx.lineWidth = 2;
+          ctx.stroke();
+
+          ctx.save();
+          ctx.translate(centerX, centerY);
+          ctx.rotate(startAngle + anglePerSlice / 2);
+          ctx.textAlign = "left";
+          ctx.fillStyle = getTextColor(item.color);
+          ctx.font = "bold 14px Arial";
+          ctx.fillText(item.name, radius * 0.4, 5);
+          ctx.restore();
+        });
+      }
+
+      function spinAll() {
+        if (isSpinning) return;
+
+        isSpinning = true;
+        const btn = document.querySelector("button");
+        btn.disabled = true;
+
+        const results = {};
+
+        Object.keys(categories).forEach((categoryName) => {
+          const randomSpins = Math.random() * 3 + 4;
+          const randomDegrees = Math.random() * 360;
+          categories[categoryName].rotation +=
+            randomSpins * 360 + randomDegrees;
+
+          const wheel = document.getElementById(`${categoryName}-wheel`);
+          wheel.style.transform = `rotate(${categories[categoryName].rotation}deg)`;
+
+          const anglePerSlice = 360 / categories[categoryName].items.length;
+          const normalizedRotation = categories[categoryName].rotation % 360;
+          const adjustedRotation = (360 - normalizedRotation) % 360;
+          const selectedIndex = Math.floor(adjustedRotation / anglePerSlice);
+
+          results[categoryName] = categories[categoryName].items[selectedIndex];
+        });
+
+        setTimeout(() => {
+          document.getElementById("result").innerHTML = `
                     <div>
                         <div style="font-size: 24px; margin-bottom: 20px; color: #333; font-weight: bold;">
                             🎯 Your Perfect Outfit!
                         </div>
                         
-                        <div class="outfit-item" style="background-color: ${results.accessory.color}; color: ${getTextColor(results.accessory.color)};">
-                            <div class="item-emoji">${results.accessory.emoji}</div>
+                        <div class="outfit-item" style="background-color: ${
+                          results.accessory.color
+                        }; color: ${getTextColor(results.accessory.color)};">
+                            <div class="item-emoji">${
+                              results.accessory.emoji
+                            }</div>
                             <div class="item-content">
                                 <span class="item-category">Accessory:</span>
-                                <span class="item-name">${results.accessory.name}</span>
+                                <span class="item-name">${
+                                  results.accessory.name
+                                }</span>
                             </div>
                         </div>
                         
-                        <div class="outfit-item" style="background-color: ${results.top.color}; color: ${getTextColor(results.top.color)};">
+                        <div class="outfit-item" style="background-color: ${
+                          results.top.color
+                        }; color: ${getTextColor(results.top.color)};">
                             <div class="item-emoji">${results.top.emoji}</div>
                             <div class="item-content">
                                 <span class="item-category">Top:</span>
-                                <span class="item-name">${results.top.name}</span>
+                                <span class="item-name">${
+                                  results.top.name
+                                }</span>
                             </div>
                         </div>
                         
-                        <div class="outfit-item" style="background-color: ${results.bottom.color}; color: ${getTextColor(results.bottom.color)};">
-                            <div class="item-emoji">${results.bottom.emoji}</div>
+                        <div class="outfit-item" style="background-color: ${
+                          results.bottom.color
+                        }; color: ${getTextColor(results.bottom.color)};">
+                            <div class="item-emoji">${
+                              results.bottom.emoji
+                            }</div>
                             <div class="item-content">
                                 <span class="item-category">Bottom:</span>
-                                <span class="item-name">${results.bottom.name}</span>
+                                <span class="item-name">${
+                                  results.bottom.name
+                                }</span>
                             </div>
                         </div>
                     </div>
                 `;
-                
-                isSpinning = false;
-                btn.disabled = false;
-            }, 4000);
-        }
 
-        window.onload = function() {
-            Object.keys(categories).forEach(categoryName => {
-                createWheel(categoryName);
-            });
-        };
+          isSpinning = false;
+          btn.disabled = false;
+        }, 4000);
+      }
+
+      window.onload = function () {
+        Object.keys(categories).forEach((categoryName) => {
+          createWheel(categoryName);
+        });
+      };
     </script>
-    <!-- Tilt live reload script -->
-    <script>
-        if (window.location.hostname === 'localhost') {
-            let lastModified = document.lastModified;
-            setInterval(() => {
-                fetch(window.location.href, {cache: 'no-cache'})
-                    .then(response => response.text())
-                    .then(html => {
-                        const parser = new DOMParser();
-                        const newDoc = parser.parseFromString(html, 'text/html');
-                        if (newDoc.lastModified !== lastModified) {
-                            window.location.reload();
-                        }
-                    });
-            }, 1000);
-        }
-        </script>
-    </body>
-    </html>
-</body>
+  </body>
 </html>
